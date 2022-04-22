@@ -20,30 +20,35 @@
       </section>
 
       <script>
+      //This example belongs to : https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON
+      async function populate() {
 
-      const heroes = [
-            {
-              "name": "Molecule Man",
-              "age": 29,
-              "secretIdentity": "Dan Jukes",
-              "powers": [
-                "Radiation resistance",
-                "Turning tiny",
-                "Radiation blast"
-              ]
-            },
-            {
-              "name": "Madame Uppercut",
-              "age": 39,
-              "secretIdentity": "Jane Wilson",
-              "powers": [
-                "Million tonne punch",
-                "Damage resistance",
-                "Superhuman reflexes"
-              ]
-            }
-          ]
-      console.log(heroes[0]["powers"][0])
+      const requestURL = 'https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json';
+
+      const request = new Request(requestURL);
+
+      const response = await fetch(request);
+
+      const superHeroes = await response.json();
+
+      //console.log(superHeroes);
+      populateHeader(superHeroes);
+      populateHeroes(superHeroes);
+
+
+
+      }
+
+      function populateHeader(obj) {
+
+
+      }
+
+      function populateHeroes(obj) {
+
+      }
+
+      populate();
 
       </script>
   </body>

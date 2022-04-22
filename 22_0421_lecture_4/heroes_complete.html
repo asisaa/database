@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>Our superheroes</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Faster+One" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+
+      <header>
+
+      </header>
+
+      <section>
+
+      </section>
+
+      <script>
+      //This is the example from https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON
+      async function populate() {
+        /* save url from were we want our data from using the Fetch API which is similar than the XMLHttpRequest API,
+        */
+        const requestURL = 'https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json';
+
+
+        //We use the URL to initialize a new Request object
+        const request = new Request(requestURL);
+        //We make the network request using the fetch() function, and this returns a Response object
+        const response = await fetch(request);
+        // Either response.text() to resolve a raw text and use the parse function or use directly the response.json()
+        const superHeroes = await response.json();
+
+        //const superHeroesText = await response.text();
+        //const superHeroes = JSON.parse(superHeroesText);
+        console.log(superHeroes);
+
+        populateHeader(superHeroes);
+        populateHeroes(superHeroes);
+
+      }
+
+      function populateHeader(obj) {
+        //Here we first create an <h1> element with createElement(), set its textContent to equal the squadName
+        const header = document.querySelector('header');
+        const myH1 = document.createElement('h1');
+        myH1.textContent = obj['homeTown'];
+        //append it to the header using appendChild().
+        header.appendChild(myH1);
+
+        const myPara = document.createElement('p');
+        //Template literals allows variables and expressions in strings
+        myPara.textContent = `Hometown: ${obj['squadName']} // Formed: ${obj['formed']}`;
+
+        header.appendChild(myPara);
+      }
+
+      function populateHeroes(obj) {
+        const section = document.querySelector('section');
+        const heroes = obj['members'];
+        /*We use a for...of loop to loop through each object in the array. for each:
+        1. Create several new elements: an <article>, an <h2>, three <p>s, and a <ul>.
+        2.Set the <h2> to contain the current hero's name.
+        3.Fill the three paragraphs with their secretIdentity, age, and a line saying "Superpowers:" to introduce the information in the list.
+        4. Store the powers property in another new constant called superPowers —
+        this contains an array that lists the current hero's superpowers.
+        5. Use another for...of loop to loop through the current hero's superpowers —
+        for each one we create an <li> element, put the superpower inside it, then put the listItem
+        inside the <ul> element (myList) using appendChild().
+        6.The very last thing we do is to append the <h2>, <p>s, and <ul> inside the <article> (myArticle),
+        then append the <article> inside the <section>. The order in which things are appended is important,
+        as this is the order they will be displayed inside the HTML.
+        */
+        for (const hero of heroes) {
+          const myArticle = document.createElement('article');
+          const myH2 = document.createElement('h2');
+          const myPara1 = document.createElement('p');
+          const myPara2 = document.createElement('p');
+          const myPara3 = document.createElement('p');
+          const myList = document.createElement('ul');
+
+          myH2.textContent = hero.name;
+          myPara1.textContent = `Secret identity: ${hero.secretIdentity}`;
+          myPara2.textContent = `Age: ${hero.age}`;
+          myPara3.textContent = 'Superpowers:';
+
+          const superPowers = hero.powers;
+
+          for (const power of superPowers) {
+            const listItem = document.createElement('li');
+            listItem.textContent = power;
+            myList.appendChild(listItem);
+          }
+
+          myArticle.appendChild(myH2);
+          myArticle.appendChild(myPara1);
+          myArticle.appendChild(myPara2);
+          myArticle.appendChild(myPara3);
+          myArticle.appendChild(myList);
+
+          section.appendChild(myArticle);
+        }
+      }
+
+      populate();
+
+
+      </script>
+  </body>
+</html>
